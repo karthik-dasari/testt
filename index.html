@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Display Data from Google Sheets</title>
+  <style>
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    table, th, td {
+      border: 1px solid black;
+    }
+    th, td {
+      padding: 10px;
+      text-align: left;
+    }
+    img {
+      max-width: 100px;
+      height: auto;
+    }
+  </style>
+</head>
+<body>
+
+<h1>CPU Data</h1>
+<table id="cpuTable">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>CPU</th>
+      <th>RAM</th>
+      <th>Image</th>
+      <th>Price</th>
+    </tr>
+  </thead>
+  <tbody>
+    <!-- Data will be inserted here -->
+  </tbody>
+</table>
+
+<script>
+  // URL of your Google Apps Script web app
+  const scriptUrl = "https://script.google.com/macros/s/AKfycbwXTMQdfadgjAXP24JuUuAZdED65n2-Pe1USAfocd5iQQwEy9bbNOilgTU3J-dZWLoVgg/exec";
+
+  // Function to fetch data and display it in the table
+  function fetchData() {
+    fetch(scriptUrl)
+      .then(response => response.json())
+      .then(data => {
+        const tableBody = document.querySelector("#cpuTable tbody");
+        tableBody.innerHTML = "";  // Clear any previous data
+
+        data.forEach(item => {
+          const row = document.createElement("tr");
+
+          // Create table cells
+          const nameCell = document.createElement("td");
+          const cpuCell = document.createElement("td");
+          const ramCell = document.createElement("td");
+          const imageCell = document.createElement("td");
+          const priceCell = document.createElement("td");
+
+          // Assign data to each cell
+          nameCell.textContent = item.Name;
+          cpuCell.textContent = item.CPU;
+          ramCell.textContent = item.RAM;
+          
+          // If the image base64 is available, display the image
+          if (item.Image) {
+            const img = document.createElement("img");
+            img.src = item.Image;  // Set base64-encoded image data
+            imageCell.appendChild(img);
+          } else {
+            imageCell.textContent = "No Image";
+          }
+
+          priceCell.textContent = item.Price;
+
+          // Append cells to the row
+          row.appendChild(nameCell);
+          row.appendChild(cpuCell);
+          row.appendChild(ramCell);
+          row.appendChild(imageCell);
+          row.appendChild(priceCell);
+
+          // Append the row to the table body
+          tableBody.appendChild(row);
+        });
+      })
+      .catch(error => {
+        console.error("Error fetching data:", error);
+      });
+  }
+
+  // Fetch data when the page loads
+  window.onload = fetchData;
+</script>
+
+</body>
+</html>

@@ -42,11 +42,11 @@
 
 <script>
   // URL of your Google Apps Script web app
-  const scriptUrl = "https://script.google.com/macros/s/AKfycbyr1BYFnnAmvP2E2VNKCnG7Wcs7gpdRNv8i2zswAkfcZAdrAJhEwI_qU5ZaOcnK3wcuFw/exec";
+  const scriptUrl = "https://script.google.com/macros/s/AKfycbx_oMndFbiL6Fyl3b8vLltpxAfTq4bT_3RPzhEwZONiEXd6E7ATBZ8kpIG-N2tx2jAsgQ/exec";
 
   // Function to fetch data and display it in the table
   function fetchData() {
-    fetch(scriptUrl)
+    fetch(scriptUrl,{redirect: "follow"})
       .then(response => response.json())
       .then(data => {
         const tableBody = document.querySelector("#cpuTable tbody");
